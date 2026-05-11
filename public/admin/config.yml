@@ -3,7 +3,8 @@ backend:
   repo: redem-zk/lingerie-oem-blog
   branch: master
   base_url: https://kayson.cc.cd
-  auth_endpoint: api/auth
+  auth_endpoint: /api/auth
+  site_domain: kayson.cc.cd
 
 media_folder: "public/images"
 public_folder: "/images"
