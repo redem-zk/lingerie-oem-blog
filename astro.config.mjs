@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://your-site.vercel.app',
+  site: 'https://lingerie-oem-blog.vercel.app',
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'zh'],
