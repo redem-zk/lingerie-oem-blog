@@ -62,7 +62,7 @@ export const en = {
   about: {
     title: 'Our Factory',
     intro:
-      'A trusted manufacturing partner specializing in women\'s intimate apparel. Located in [Your City], our facility combines traditional craftsmanship with modern production technology.',
+      'A trusted manufacturing partner specializing in women\'s intimate apparel. Located in Foshan, Guangdong, our facility combines traditional craftsmanship with modern production technology.',
     lines: 'Production Lines',
     quality: 'Quality Control',
     partners: 'Brands We Work With',
