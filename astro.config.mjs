@@ -2,9 +2,12 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
+import vercel from '@astrojs/vercel';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://kayson.cc.cd',
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'zh'],
@@ -12,7 +15,10 @@ export default defineConfig({
       prefixDefaultLocale: true,
     },
   },
+
   vite: {
     plugins: [tailwindcss()],
   },
+
+  adapter: vercel(),
 });
