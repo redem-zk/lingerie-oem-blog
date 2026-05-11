@@ -2,8 +2,8 @@ backend:
   name: github
   repo: redem-zk/lingerie-oem-blog
   branch: master
-  base_url: https://kayson.cc.cd
-  auth_endpoint: api/auth
+  auth_type: pkce
+  client_id: Ov23libt3fxKTYcSq2cJ
 
 media_folder: "public/images"
 public_folder: "/images"
