@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import InquiryForm from '../../components/InquiryForm.astro';
+import { getLangFromUrl, t } from '../../utils/i18n';
+
+const lang = getLangFromUrl(Astro.url);
+const i18n = t(lang);
+---
+
+<BaseLayout title={i18n.inquiry.title} description={i18n.inquiry.subtitle} lang={lang}>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="grid lg:grid-cols-2 gap-16 items-start">
+      <div>
+        <span class="section-tag">{i18n.nav.inquiry}</span>
+        <h1 class="text-4xl sm:text-5xl font-bold text-charcoal mt-3 leading-tight">{i18n.inquiry.title}</h1>
+        <p class="mt-5 text-lg text-muted leading-relaxed">{i18n.inquiry.subtitle}</p>
+        <div class="mt-10 space-y-5">
+          <div class="flex gap-4">
+            <div class="w-10 h-10 rounded-xl bg-rose-light/20 flex items-center justify-center shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-rose)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-charcoal text-sm">{lang === 'zh' ? '邮件回复' : 'Email Response'}</h3>
+              <p class="text-sm text-muted">{lang === 'zh' ? '24 小时内回复您的询盘' : 'Reply within 24 hours'}</p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="w-10 h-10 rounded-xl bg-rose-light/20 flex items-center justify-center shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-rose)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-charcoal text-sm">{lang === 'zh' ? '快速响应' : 'Fast Turnaround'}</h3>
+              <p class="text-sm text-muted">{lang === 'zh' ? '样品开发周期 7-14 天' : 'Sample development in 7-14 days'}</p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="w-10 h-10 rounded-xl bg-rose-light/20 flex items-center justify-center shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-rose)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <h3 class="font-medium text-charcoal text-sm">{lang === 'zh' ? '保密保证' : 'Confidentiality'}</h3>
+              <p class="text-sm text-muted">{lang === 'zh' ? '所有设计信息严格保密，可签 NDA' : 'Strict confidentiality, NDA available'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card p-8">
+        <InquiryForm />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

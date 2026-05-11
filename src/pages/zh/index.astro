@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroCarousel from '../../components/HeroCarousel.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import CaseCard from '../../components/CaseCard.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getLangFromUrl, t, localizedPath } from '../../utils/i18n';
+import { getFeaturedProducts, getFeaturedCases, getLatestBlogPosts } from '../../utils/content';
+
+const lang = getLangFromUrl(Astro.url);
+const i18n = t(lang);
+
+const [featuredProducts, featuredCases, latestPosts] = await Promise.all([
+  getFeaturedProducts(lang),
+  getFeaturedCases(lang),
+  getLatestBlogPosts(lang, 3),
+]);
+---
+
+<BaseLayout
+  title="Lingerie OEM — 高端内衣代工合作伙伴"
+  description={i18n.home.heroSubtitle}
+  lang={lang}
+>
+  <HeroCarousel />
+
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+    <div class="text-center mb-16">
+      <span class="section-tag">{i18n.home.strengths.title}</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-charcoal mt-3">为什么全球品牌选择我们</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      {i18n.home.strengths.items.map((item, i) => (
+        <div class="text-center group">
+          <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-rose-light/20 flex items-center justify-center group-hover:bg-rose-light/30 transition-colors">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-rose)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              {i === 0 && <><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></>}
+              {i === 1 && <><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></>}
+              {i === 2 && <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></>}
+              {i === 3 && <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></>}
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-charcoal mb-2">{item.title}</h3>
+          <p class="text-sm text-muted leading-relaxed">{item.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {featuredProducts.length > 0 && (
+    <section class="bg-white py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-end justify-between mb-12">
+          <div>
+            <span class="section-tag">{i18n.home.featuredProducts}</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-charcoal mt-3">精选代工产品</h2>
+          </div>
+          <a href={localizedPath(lang, 'products')} class="text-sm font-medium text-gold hover:text-gold-light transition-colors hidden sm:flex items-center gap-1.5">
+            {i18n.home.viewAll}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {featuredProducts.slice(0, 4).map((product) => (
+            <ProductCard product={product} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {featuredCases.length > 0 && (
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <div class="flex items-end justify-between mb-12">
+        <div>
+          <span class="section-tag">{i18n.home.featuredCases}</span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-charcoal mt-3">客户怎么说</h2>
+        </div>
+        <a href={localizedPath(lang, 'cases')} class="text-sm font-medium text-gold hover:text-gold-light transition-colors hidden sm:flex items-center gap-1.5">
+          {i18n.home.viewAll}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredCases.slice(0, 3).map((caseItem) => (
+          <CaseCard caseItem={caseItem} />
+        ))}
+      </div>
+    </section>
+  )}
+
+  {latestPosts.length > 0 && (
+    <section class="bg-white py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-end justify-between mb-12">
+          <div>
+            <span class="section-tag">{i18n.home.latestBlog}</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-charcoal mt-3">行业洞察</h2>
+          </div>
+          <a href={localizedPath(lang, 'blog')} class="text-sm font-medium text-gold hover:text-gold-light transition-colors hidden sm:flex items-center gap-1.5">
+            {i18n.home.viewAll}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {latestPosts.map((post) => (
+            <BlogCard post={post} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="relative overflow-hidden bg-gradient-to-r from-rose-light/20 via-cream to-gold/5 py-24">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-rose-light/10 rounded-full blur-3xl"></div>
+    <div class="relative max-w-2xl mx-auto text-center px-4">
+      <div class="separator mb-8"><span></span></div>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-charcoal leading-tight">准备好开始您的产品线？</h2>
+      <p class="mt-5 text-muted text-lg leading-relaxed">无论您是需要开发新系列还是寻找可靠代工伙伴，我们随时为您提供支持。</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href={localizedPath(lang, 'inquiry')} class="btn-primary text-base !px-10 !py-3.5">
+          {i18n.home.ctaInquiry}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href={localizedPath(lang, 'contact')} class="btn-outline text-base !px-10 !py-3.5">{i18n.nav.contact}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getLangFromUrl, t, localizedPath } from '../../../utils/i18n';
+import { getLocalizedCollection } from '../../../utils/content';
+
+const lang = getLangFromUrl(Astro.url);
+const i18n = t(lang);
+
+const allProducts = await getLocalizedCollection('products', lang);
+const currentCategory = Astro.url.searchParams.get('category');
+const filtered = currentCategory
+  ? allProducts.filter((p) => p.data.category === currentCategory)
+  : allProducts;
+const sorted = filtered.sort((a, b) => a.data.order - b.data.order);
+const categories = Object.entries(i18n.products.categories);
+---
+
+<BaseLayout title={i18n.products.title} description={i18n.products.subtitle} lang={lang}>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <h1 class="text-4xl font-bold text-charcoal">{i18n.products.title}</h1>
+    <p class="mt-3 text-muted">{i18n.products.subtitle}</p>
+    <div class="flex flex-wrap gap-2 mt-8">
+      <a href={localizedPath(lang, 'products')} class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!currentCategory ? 'bg-gold text-white' : 'bg-white text-charcoal hover:bg-rose-light/20 border border-rose-light/30'}`}>
+        {i18n.products.allCategories}
+      </a>
+      {categories.map(([key, label]) => (
+        <a href={`${localizedPath(lang, 'products')}?category=${key}`} class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${currentCategory === key ? 'bg-gold text-white' : 'bg-white text-charcoal hover:bg-rose-light/20 border border-rose-light/30'}`}>
+          {label}
+        </a>
+      ))}
+    </div>
+    {sorted.length > 0 ? (
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10">
+        {sorted.map((p) => {
+          const pSlug = p.id.replace(`${lang}/`, '');
+          return (
+            <a href={localizedPath(lang, `products/${pSlug}`)} class="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+              <div class="aspect-[3/4] overflow-hidden">
+                {p.data.images.length > 0 ? (
+                  <img src={p.data.images[0]} alt={p.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                ) : (
+                  <div class="w-full h-full bg-cream-dark flex items-center justify-center text-muted text-sm" />
+                )}
+              </div>
+              <div class="p-4">
+                <span class="text-xs font-medium text-gold uppercase tracking-wider">{i18n.products.categories[p.data.category]}</span>
+                <h3 class="mt-1 font-medium text-charcoal group-hover:text-rose transition-colors">{p.data.title}</h3>
+                <div class="mt-2 text-xs text-muted"><span>{p.data.fabric}</span></div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    ) : (
+      <div class="text-center py-20 text-muted">{lang === 'zh' ? '暂无产品' : 'No products yet'}</div>
+    )}
+  </section>
+</BaseLayout>

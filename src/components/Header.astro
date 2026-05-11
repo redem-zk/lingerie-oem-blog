@@ -1,0 +1,86 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { getLangFromUrl, t, localizedPath } from '../utils/i18n';
+
+const lang = getLangFromUrl(Astro.url);
+const i18n = t(lang);
+const isActive = (path: string) => {
+  const currentPath = Astro.url.pathname;
+  const checkPath = `/${lang}${path}`;
+  if (path === '') return currentPath === `/${lang}` || currentPath === `/${lang}/`;
+  return currentPath.startsWith(checkPath);
+};
+const navItems = [
+  { path: '', label: i18n.nav.home },
+  { path: '/products', label: i18n.nav.products },
+  { path: '/about', label: i18n.nav.about },
+  { path: '/cases', label: i18n.nav.cases },
+  { path: '/blog', label: i18n.nav.blog },
+];
+---
+
+<header class="sticky top-0 z-50 bg-cream/85 backdrop-blur-md border-b border-rose-light/20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="flex items-center justify-between h-16">
+      <a href={localizedPath(lang, '')} class="flex items-center gap-2 no-underline group">
+        <span class="font-serif-en text-xl font-bold text-charcoal tracking-wide">
+          Lingerie<span class="text-rose transition-colors">OEM</span>
+        </span>
+        <span class="hidden sm:inline text-[10px] text-muted-light tracking-[0.2em] uppercase border-l border-rose-light/40 pl-2.5 pt-0.5">
+          {lang === 'zh' ? '高端内衣制造' : 'Intimate Apparel'}
+        </span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-1">
+        {navItems.map((item) => (
+          <a
+            href={localizedPath(lang, item.path)}
+            class={`relative px-3.5 py-2 text-sm font-medium rounded-full transition-colors ${
+              isActive(item.path)
+                ? 'text-gold'
+                : 'text-charcoal/70 hover:text-charcoal'
+            }`}
+          >
+            {item.label}
+            {isActive(item.path) && (
+              <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold"></span>
+            )}
+          </a>
+        ))}
+        <div class="ml-3 pl-3 border-l border-rose-light/30 flex items-center gap-2">
+          <a href={localizedPath(lang, 'inquiry')} class="btn-primary !py-2 !px-5 !text-xs">
+            {i18n.nav.inquiry}
+          </a>
+          <LanguageSwitcher />
+        </div>
+      </div>
+
+      <!-- Mobile -->
+      <div class="flex md:hidden items-center gap-3">
+        <a href={localizedPath(lang, 'inquiry')} class="btn-primary !py-1.5 !px-4 !text-xs">
+          {i18n.nav.inquiry}
+        </a>
+        <LanguageSwitcher />
+        <button id="mobile-menu-btn" class="text-charcoal p-1" aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <div id="mobile-menu" class="hidden md:hidden pb-5 space-y-1">
+      {navItems.map((item) => (
+        <a href={localizedPath(lang, item.path)} class="block py-2.5 px-3 text-sm font-medium text-charcoal/70 rounded-lg hover:bg-rose-light/10 hover:text-charcoal transition-colors">
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</header>
+
+<script>
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu')?.classList.toggle('hidden');
+  });
+</script>

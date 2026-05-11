@@ -1,0 +1,33 @@
+---
+import { getLangFromUrl, t, localizedPath } from '../utils/i18n';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  caseItem: CollectionEntry<'cases'>;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const i18n = t(lang);
+const { caseItem } = Astro.props;
+const slug = caseItem.id.replace(`${lang}/`, '');
+---
+
+<a
+  href={localizedPath(lang, `cases/${slug}`)}
+  class="card p-6 block"
+>
+  <div class="flex items-center gap-2 mb-4">
+    <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+    <span class="text-[11px] font-medium text-gold uppercase tracking-wider">
+      {caseItem.data.category}
+    </span>
+  </div>
+  <h3 class="font-semibold text-lg text-charcoal group-hover:text-rose transition-colors leading-snug">
+    {caseItem.data.title}
+  </h3>
+  <p class="mt-3 text-sm text-muted leading-relaxed line-clamp-2">{caseItem.data.challenge}</p>
+  <div class="mt-6 pt-4 border-t border-rose-light/15 flex items-center justify-between text-xs text-muted-light">
+    <span class="font-medium text-charcoal/60">{caseItem.data.clientName}</span>
+    <span>{caseItem.data.clientRegion}</span>
+  </div>
+</a>

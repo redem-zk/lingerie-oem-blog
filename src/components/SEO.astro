@@ -1,0 +1,30 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  lang?: string;
+}
+
+const {
+  title,
+  description = 'Premium lingerie manufacturing partner — custom design, sampling, and bulk production',
+  image = '/images/og-default.jpg',
+  lang = 'en',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<link rel="canonical" href={canonical.href} />
+<meta name="description" content={description} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.site).href} />
+<meta property="og:url" content={canonical.href} />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<title>{title}</title>
+
+{lang === 'zh' && <link rel="alternate" hreflang="en" href={canonical.href.replace('/zh/', '/en/')} />}
+{lang === 'en' && <link rel="alternate" hreflang="zh" href={canonical.href.replace('/en/', '/zh/')} />}

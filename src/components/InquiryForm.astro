@@ -1,0 +1,92 @@
+---
+import { getLangFromUrl, t } from '../utils/i18n';
+
+const lang = getLangFromUrl(Astro.url);
+const i18n = t(lang);
+
+const categories = [
+  { value: '', label: lang === 'zh' ? '请选择' : 'Select' },
+  ...Object.entries(i18n.products.categories).map(([value, label]) => ({ value, label })),
+];
+---
+
+<form
+  action="https://api.web3forms.com/submit"
+  method="POST"
+  class="space-y-5"
+>
+  <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY" />
+  <input type="hidden" name="subject" value={lang === 'zh' ? '新询盘来自网站' : 'New Inquiry from Website'} />
+  <input type="hidden" name="from_name" value="Lingerie OEM Inquiry" />
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <div>
+      <label class="block text-sm font-medium text-charcoal mb-1.5">{i18n.inquiry.name}</label>
+      <input
+        type="text"
+        name="name"
+        required
+        class="w-full px-4 py-2.5 bg-white border border-rose-light/50 rounded-lg focus:outline-none focus:border-rose text-sm transition-colors"
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-charcoal mb-1.5">{i18n.inquiry.company}</label>
+      <input
+        type="text"
+        name="company"
+        class="w-full px-4 py-2.5 bg-white border border-rose-light/50 rounded-lg focus:outline-none focus:border-rose text-sm transition-colors"
+      />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <div>
+      <label class="block text-sm font-medium text-charcoal mb-1.5">{i18n.inquiry.email}</label>
+      <input
+        type="email"
+        name="email"
+        required
+        class="w-full px-4 py-2.5 bg-white border border-rose-light/50 rounded-lg focus:outline-none focus:border-rose text-sm transition-colors"
+      />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-charcoal mb-1.5">{i18n.inquiry.productCategory}</label>
+      <select
+        name="category"
+        class="w-full px-4 py-2.5 bg-white border border-rose-light/50 rounded-lg focus:outline-none focus:border-rose text-sm transition-colors"
+      >
+        {categories.map((c) => (
+          <option value={c.value}>{c.label}</option>
+        ))}
+      </select>
+    </div>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium text-charcoal mb-1.5">{i18n.inquiry.quantity}</label>
+    <input
+      type="text"
+      name="quantity"
+      class="w-full px-4 py-2.5 bg-white border border-rose-light/50 rounded-lg focus:outline-none focus:border-rose text-sm transition-colors"
+    />
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium text-charcoal mb-1.5">{i18n.inquiry.message}</label>
+    <textarea
+      name="message"
+      rows={5}
+      required
+      class="w-full px-4 py-2.5 bg-white border border-rose-light/50 rounded-lg focus:outline-none focus:border-rose text-sm transition-colors resize-none"
+    ></textarea>
+  </div>
+
+  <input type="checkbox" name="botcheck" class="hidden" style="display:none;" />
+
+  <button
+    type="submit"
+    class="w-full sm:w-auto bg-gold text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gold/90 transition-colors"
+  >
+    {i18n.inquiry.submit}
+  </button>
+</form>

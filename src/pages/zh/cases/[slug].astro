@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getLangFromUrl, t, localizedPath } from '../../../utils/i18n';
+import { getLocalizedCollection } from '../../../utils/content';
+
+export async function getStaticPaths() {
+  const cases = await getLocalizedCollection('cases', 'zh');
+  return cases.map((c) => ({ params: { slug: c.id.replace('zh/', '') } }));
+}
+
+const lang = 'zh';
+const i18n = t(lang);
+const { slug } = Astro.params;
+
+const allCases = await getLocalizedCollection('cases', lang);
+const caseItem = allCases.find((c) => c.id === `${lang}/${slug}`);
+
+if (!caseItem) {
+  return Astro.redirect(localizedPath(lang, 'cases'));
+}
+---
+
+<BaseLayout title={`${caseItem.data.title} — ${i18n.cases.title}`} lang={lang}>
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <a href={localizedPath(lang, 'cases')} class="inline-flex items-center gap-2 text-sm text-muted hover:text-gold transition-colors mb-8">&larr; {i18n.cases.backToList}</a>
+    <span class="text-sm font-medium text-gold uppercase tracking-wider">{caseItem.data.category}</span>
+    <h1 class="mt-2 text-3xl font-bold text-charcoal">{caseItem.data.title}</h1>
+    <div class="flex items-center gap-4 mt-4 text-sm text-muted"><span>{caseItem.data.clientName}</span><span>&middot;</span><span>{caseItem.data.clientRegion}</span></div>
+    <div class="mt-12 space-y-8">
+      <div class="bg-white rounded-lg p-8 shadow-sm"><h3 class="font-bold text-lg text-charcoal mb-3">{i18n.cases.challenge}</h3><p class="text-muted leading-relaxed">{caseItem.data.challenge}</p></div>
+      <div class="bg-white rounded-lg p-8 shadow-sm"><h3 class="font-bold text-lg text-charcoal mb-3">{i18n.cases.solution}</h3><p class="text-muted leading-relaxed">{caseItem.data.solution}</p></div>
+      <div class="bg-white rounded-lg p-8 shadow-sm border-l-4 border-gold"><h3 class="font-bold text-lg text-charcoal mb-3">{i18n.cases.results}</h3><p class="text-muted leading-relaxed">{caseItem.data.result}</p></div>
+    </div>
+  </section>
+</BaseLayout>

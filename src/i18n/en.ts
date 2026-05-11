@@ -1,0 +1,118 @@
+export const en = {
+  nav: {
+    home: 'Home',
+    products: 'Products',
+    about: 'Factory',
+    cases: 'Cases',
+    blog: 'Blog',
+    inquiry: 'Inquiry',
+    contact: 'Contact',
+  },
+  home: {
+    heroTitle: 'Premium Lingerie Manufacturing Partner',
+    heroSubtitle:
+      'From concept to bulk production — we craft intimate apparel for brands worldwide',
+    ctaInquiry: 'Send Inquiry',
+    ctaProducts: 'View Products',
+    strengths: {
+      title: 'Why Partner With Us',
+      items: [
+        {
+          title: 'Expert Craftsmanship',
+          desc: '15+ years specializing in lace, embroidery, and delicate fabrics',
+        },
+        {
+          title: 'Flexible MOQ',
+          desc: 'From small-batch sampling to large-scale production',
+        },
+        {
+          title: 'End-to-End Service',
+          desc: 'Pattern making, grading, sample development, and bulk production',
+        },
+        {
+          title: 'Quality Certified',
+          desc: 'ISO 9001, OEKO-TEX Standard 100 certified facility',
+        },
+      ],
+    },
+    featuredProducts: 'Featured Products',
+    featuredCases: 'Client Success Stories',
+    latestBlog: 'Latest Articles',
+    viewAll: 'View All',
+  },
+  products: {
+    title: 'Products',
+    subtitle: 'Explore our manufacturing capabilities across categories',
+    allCategories: 'All',
+    categories: {
+      'lace-bra': 'Lace Bras',
+      'everyday-bra': 'Everyday Bras',
+      'sports-bra': 'Sports Bras',
+      shapewear: 'Shapewear',
+      panty: 'Panties',
+      sleepwear: 'Sleepwear',
+      other: 'Others',
+    },
+    fabric: 'Fabric',
+    moq: 'MOQ',
+    sampleLeadTime: 'Sample Lead Time',
+    features: 'Features',
+    backToList: 'Back to Products',
+  },
+  about: {
+    title: 'Our Factory',
+    intro:
+      'A trusted manufacturing partner specializing in women\'s intimate apparel. Located in [Your City], our facility combines traditional craftsmanship with modern production technology.',
+    lines: 'Production Lines',
+    quality: 'Quality Control',
+    partners: 'Brands We Work With',
+  },
+  cases: {
+    title: 'Client Success Stories',
+    subtitle: 'How we helped brands bring their vision to life',
+    challenge: 'Client Challenge',
+    solution: 'Our Solution',
+    results: 'Results',
+    backToList: 'Back to Cases',
+  },
+  blog: {
+    title: 'Blog',
+    subtitle: 'Insights on lingerie manufacturing, fabrics, and industry trends',
+    readMore: 'Read More',
+    tags: 'Tags',
+    relatedPosts: 'Related Articles',
+    subscribe: 'Subscribe to updates',
+    subscribePlaceholder: 'Your email',
+    subscribeButton: 'Subscribe',
+  },
+  inquiry: {
+    title: 'Send an Inquiry',
+    subtitle:
+      'Tell us about your project and we\'ll get back to you within 24 hours',
+    name: 'Name *',
+    company: 'Company',
+    email: 'Email *',
+    productCategory: 'Product Category',
+    quantity: 'Estimated Quantity',
+    message: 'Tell us about your requirements *',
+    submit: 'Submit Inquiry',
+    success: 'Thank you! We will get back to you shortly.',
+  },
+  contact: {
+    title: 'Contact Us',
+    address: 'Address',
+    phone: 'Phone',
+    email: 'Email',
+    social: 'Follow Us',
+    formTitle: 'Send a Message',
+  },
+  footer: {
+    copyright: 'All rights reserved.',
+    privacy: 'Privacy Policy',
+    terms: 'Terms',
+  },
+  language: {
+    en: 'English',
+    zh: '中文',
+  },
+};

@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@theme {
+  --color-rose: #c48b8b;
+  --color-rose-light: #f2e0df;
+  --color-rose-dark: #9b6b6b;
+  --color-gold: #b8860b;
+  --color-gold-light: #d4a843;
+  --color-cream: #fdfbf7;
+  --color-cream-dark: #f5f0e8;
+  --color-charcoal: #2d2d2d;
+  --color-muted: #8a8a8a;
+  --color-muted-light: #b8b0aa;
+
+  --font-serif-en: "Playfair Display", Georgia, serif;
+  --font-serif-zh: "Noto Serif SC", serif;
+  --font-sans-en: "Inter", system-ui, sans-serif;
+  --font-sans-zh: "Noto Sans SC", sans-serif;
+}
+
+/* ========== Base ========== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans-en), var(--font-sans-zh), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========== Typography ========== */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif-en), var(--font-serif-zh), serif;
+  letter-spacing: -0.02em;
+}
+
+.serif {
+  font-family: var(--font-serif-en), var(--font-serif-zh), serif;
+}
+
+/* ========== Decorative ========== */
+.separator {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-rose-light), transparent);
+}
+.separator span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  flex-shrink: 0;
+}
+
+.section-tag {
+  display: inline-block;
+  font-family: var(--font-sans-en), var(--font-sans-zh), sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 1rem;
+}
+
+/* ========== Cards ========== */
+.card {
+  background: #fff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.card:hover {
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.03);
+  transform: translateY(-2px);
+}
+
+/* ========== Buttons ========== */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--color-gold), #9e7309);
+  color: white;
+  padding: 0.875rem 2rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(184, 134, 11, 0.25);
+}
+.btn-primary:hover {
+  box-shadow: 0 6px 25px rgba(184, 134, 11, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1.5px solid var(--color-rose-light);
+  color: var(--color-charcoal);
+  padding: 0.875rem 2rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
+}
+.btn-outline:hover {
+  border-color: var(--color-rose);
+  background: rgba(196, 139, 139, 0.04);
+  transform: translateY(-1px);
+}
+
+/* ========== Prose / Content ========== */
+.prose {
+  max-width: 65ch;
+  font-size: 1.0625rem;
+  line-height: 1.85;
+}
+.prose p {
+  margin-bottom: 1.25em;
+  color: var(--color-muted);
+}
+.prose h2 {
+  font-size: 1.5rem;
+  margin-top: 2.5em;
+  margin-bottom: 0.75em;
+  color: var(--color-charcoal);
+}
+.prose h3 {
+  font-size: 1.2rem;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+.prose img {
+  border-radius: 0.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.25em;
+}
+.prose a {
+  color: var(--color-gold);
+  text-decoration: underline;
+}
+
+/* ========== Fade-in animation ========== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fadeUp 0.7s ease forwards;
+}

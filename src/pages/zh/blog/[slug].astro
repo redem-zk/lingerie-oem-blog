@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import { getLangFromUrl, t, localizedPath } from '../../../utils/i18n';
+import { getLocalizedCollection } from '../../../utils/content';
+
+export async function getStaticPaths() {
+  const posts = await getLocalizedCollection('blog', 'zh');
+  return posts.map((p) => ({ params: { slug: p.id.replace('zh/', '') } }));
+}
+
+const lang = 'zh';
+const i18n = t(lang);
+const { slug } = Astro.params;
+
+const allPosts = await getLocalizedCollection('blog', lang);
+const post = allPosts.find((p) => p.id === `${lang}/${slug}`);
+
+if (!post) {
+  return Astro.redirect(localizedPath(lang, 'blog'));
+}
+
+const relatedPosts = allPosts
+  .filter((p) => p.data.tags.some((t) => post.data.tags.includes(t)) && p.id !== post.id)
+  .slice(0, 3);
+---
+
+<BaseLayout title={`${post.data.title} — ${i18n.blog.title}`} description={post.data.excerpt} image={post.data.coverImage} lang={lang}>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <a href={localizedPath(lang, 'blog')} class="inline-flex items-center gap-2 text-sm text-muted hover:text-gold transition-colors mb-8">&larr; 返回博客</a>
+    <div class="flex flex-wrap gap-2 mb-4">
+      {post.data.tags.map((tag) => (<a href={`${localizedPath(lang, 'blog')}?tag=${tag}`} class="text-xs font-medium text-gold uppercase tracking-wider hover:underline">{tag}</a>))}
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold text-charcoal leading-tight">{post.data.title}</h1>
+    <div class="flex items-center gap-4 mt-4 text-sm text-muted"><span>{post.data.author}</span><span>&middot;</span><time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</time></div>
+    {post.data.coverImage && <img src={post.data.coverImage} alt={post.data.title} class="w-full rounded-lg mt-8 aspect-[2/1] object-cover" />}
+    <div class="mt-10 prose max-w-none" set:html={post.body} />
+  </article>
+  {relatedPosts.length > 0 && (
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <hr class="border-rose-light/20 mb-10" />
+      <h2 class="text-xl font-bold text-charcoal mb-6">{i18n.blog.relatedPosts}</h2>
+      <div class="grid sm:grid-cols-3 gap-6">{relatedPosts.map((rp) => <BlogCard post={rp} />)}</div>
+    </section>
+  )}
+</BaseLayout>

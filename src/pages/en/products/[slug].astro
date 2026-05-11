@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getLangFromUrl, t, localizedPath } from '../../../utils/i18n';
+import { getLocalizedCollection } from '../../../utils/content';
+
+export async function getStaticPaths() {
+  const products = await getLocalizedCollection('products', 'en');
+  return products.map((p) => ({
+    params: { slug: p.id.replace('en/', '') },
+  }));
+}
+
+const lang = 'en';
+const i18n = t(lang);
+const { slug } = Astro.params;
+
+const allProducts = await getLocalizedCollection('products', lang);
+const product = allProducts.find((p) => p.id === `${lang}/${slug}`);
+
+if (!product) {
+  return Astro.redirect(localizedPath(lang, 'products'));
+}
+
+const relatedProducts = allProducts
+  .filter((p) => p.data.category === product.data.category && p.id !== product.id)
+  .slice(0, 4);
+---
+
+<BaseLayout title={`${product.data.title} — ${i18n.products.title}`} lang={lang}>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <a href={localizedPath(lang, 'products')} class="inline-flex items-center gap-2 text-sm text-muted hover:text-gold transition-colors mb-8">
+      &larr; {i18n.products.backToList}
+    </a>
+    <div class="grid lg:grid-cols-2 gap-12">
+      <div class="space-y-4">
+        <div class="aspect-[3/4] rounded-lg overflow-hidden bg-cream-dark">
+          {product.data.images.length > 0 ? (
+            <img src={product.data.images[0]} alt={product.data.title} class="w-full h-full object-cover" />
+          ) : (
+            <div class="w-full h-full flex items-center justify-center text-muted" />
+          )}
+        </div>
+        {product.data.images.length > 1 && (
+          <div class="grid grid-cols-3 gap-4">
+            {product.data.images.slice(1).map((img) => (
+              <div class="aspect-square rounded-lg overflow-hidden bg-cream-dark">
+                <img src={img} alt="" class="w-full h-full object-cover" loading="lazy" />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div>
+        <span class="text-sm font-medium text-gold uppercase tracking-wider">{i18n.products.categories[product.data.category]}</span>
+        <h1 class="mt-2 text-3xl font-bold text-charcoal">{product.data.title}</h1>
+        <dl class="mt-8 space-y-4">
+          <div class="flex gap-2"><dt class="text-sm font-medium text-charcoal w-24 shrink-0">{i18n.products.fabric}</dt><dd class="text-sm text-muted">{product.data.fabric}</dd></div>
+          <div class="flex gap-2"><dt class="text-sm font-medium text-charcoal w-24 shrink-0">{i18n.products.moq}</dt><dd class="text-sm text-muted">{product.data.moq}</dd></div>
+          <div class="flex gap-2"><dt class="text-sm font-medium text-charcoal w-24 shrink-0">{i18n.products.sampleLeadTime}</dt><dd class="text-sm text-muted">{product.data.sampleLeadTime}</dd></div>
+        </dl>
+        <div class="mt-8"><h3 class="font-medium text-charcoal mb-3">{i18n.products.features}</h3>
+          <ul class="space-y-2">{product.data.features.map((f) => (<li class="flex items-start gap-2 text-sm text-muted"><span class="text-gold mt-0.5">&bull;</span>{f}</li>))}</ul>
+        </div>
+        <a href={localizedPath(lang, 'inquiry')} class="inline-block mt-8 bg-gold text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-gold/90 transition-colors">{i18n.home.ctaInquiry}</a>
+      </div>
+    </div>
+    {relatedProducts.length > 0 && (
+      <div class="mt-20 pt-12 border-t border-rose-light/20">
+        <h2 class="text-xl font-bold text-charcoal mb-6">Related Products</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {relatedProducts.map((rp) => {
+            const rpSlug = rp.id.replace(`${lang}/`, '');
+            return (
+              <a href={localizedPath(lang, `products/${rpSlug}`)} class="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all">
+                <div class="aspect-[3/4] overflow-hidden">{rp.data.images.length > 0 ? (<img src={rp.data.images[0]} alt={rp.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />) : (<div class="w-full h-full bg-cream-dark" />)}</div>
+                <div class="p-3"><h3 class="text-sm font-medium text-charcoal group-hover:text-rose transition-colors">{rp.data.title}</h3><p class="text-xs text-muted mt-1">{rp.data.fabric}</p></div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    )}
+  </section>
+</BaseLayout>
